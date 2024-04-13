@@ -23,9 +23,11 @@ Installing this plugin is just like any other WordPress plugin.
 Navigate to your WordPress “Plugins” page, inside of your WordPress dashboard, and follow these instructions:
 
 1. Upload plugin folder to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Under plugin directory copy `settings.example.yaml' to `settings.yaml'
-1. Change `settings.yaml` configuration according to your needs
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Under plugin directory copy `settings.example.yaml' to `settings.yaml'
+4. Change `settings.yaml` configuration according to your needs
+5. Run `composer install`
+
 
 ## Frequently Asked Questions
 
