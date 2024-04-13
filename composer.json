@@ -1,0 +1,26 @@
+{
+  "name": "forminator/civicrm-companion",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "psr-4": {
+      "Forminator\\CiviCRMCompanion\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "CiviHOST",
+      "homepage": "https://www.civihost.it/"
+    }
+  ],
+  "require": {
+    "symfony/yaml": "^6.4"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "platform": {
+      "php": "8.1.0"
+    }
+  }
+}

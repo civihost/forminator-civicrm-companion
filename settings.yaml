@@ -1,0 +1,19 @@
+forminator:
+  56:
+    contact:
+      entries:
+        first_name: 'name-1'
+        last_name: 'text-1'
+    email:
+      location_type_id: 3
+      is_primary: true
+      entries:
+        email: 'email-1'
+    activity:
+      type: 57
+      subject: 'Iscrizione alla newsletter'
+    tags:
+      values:
+        - 9
+
+
