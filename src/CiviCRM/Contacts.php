@@ -20,9 +20,6 @@ class Contacts
         $contact_id = null;
         $params = self::createContactParams($post, $config);
 
-        if (isset($params['email'])) {
-            $contact_id = self::getContactIdFromEmail($params['email']);
-        }
         try {
             $contact = self::civicrm_api3('Contact', 'create', $params);
             $contact_id = $contact['id'];

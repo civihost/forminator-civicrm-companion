@@ -2,6 +2,8 @@
 
 namespace Forminator\CiviCRMCompanion\Traits;
 
+use Forminator\CiviCRMCompanion\Config;
+
 trait CiviCRM
 {
     /**
@@ -267,7 +269,8 @@ trait CiviCRM
     public static function civicrm_api3(string $entity, string $action, array $params = [])
     {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, CIVICRM_API3_REST_URL);
+
+        curl_setopt($ch, CURLOPT_URL, Config::get('external.api3_rest_url'));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -276,7 +279,16 @@ trait CiviCRM
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Requested-With: XMLHttpRequest"));
         curl_setopt($ch, CURLOPT_VERBOSE, true);
 
-        $postFields = "entity={$entity}&action={$action}&api_key=" . CIVICRM_API_KEY . "&key=" . CIVICRM_SITE_KEY . "&json=" . (json_encode($params));
+        $data = [
+            'entity'  => $entity,
+            'action'  => $action,
+            'api_key' => Config::get('external.api_key'),
+            'key'     => Config::get('external.site_key'),
+            'json'    => json_encode($params),
+        ];
+
+        $postFields = http_build_query($data);
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
         $data = curl_exec($ch);
 
@@ -284,6 +296,7 @@ trait CiviCRM
             throw new \Exception(curl_error($ch));
         } else {
             $result = json_decode($data, true);
+            \Civi::log()->debug(FORMINATOR_CIVICRM_PLUGIN_BASENAME . ' result: ' . print_r($result, true));
         }
         curl_close($ch);
 
@@ -306,13 +319,13 @@ trait CiviCRM
      */
     public static function civicrm_api4(string $entity, string $action, array $params = [])
     {
-        $url = CIVICRM_API4_REST_URL . $entity . '/' . $action;
+        $url = Config::get('external.api4_rest_url') . $entity . '/' . $action;
         $request = stream_context_create([
             'http' => [
                 'method' => 'POST',
                 'header' => [
                     'Content-Type: application/x-www-form-urlencoded',
-                    'X-Civi-Auth: Bearer ' . CIVICRM_API_KEY,
+                    'X-Civi-Auth: Bearer ' . Config::get('external.api_key'),
                 ],
                 'content' => http_build_query(['params' => json_encode($params)]),
             ]
@@ -324,53 +337,6 @@ trait CiviCRM
         } else {
             throw new \Exception(print_r($result, true));
         }
-
-        /*
-    $client = new \GuzzleHttp\Client([
-      'base_uri' => CIVICRM_API4_REST_URL,
-      'headers' => [
-        //'Authorization' => 'Basic ' . CIVICRM_API_KEY,
-        'X-Requested-With' => 'XMLHttpRequest',
-        'X-Civi-Auth' => 'Bearer ' . CIVICRM_API_KEY,
-      ],
-    ]);
-
-
-    $response = $client->get($entity . '/' . $action, [
-      'form_params' => ['params' => json_encode($params)],
-    ]);
-    $result = json_decode((string) $response->getBody(), TRUE);
-*/
-        /*
-    $ch = curl_init();
-    $url = CIVICRM_API4_REST_URL . '/' . $entity . '/' . $action;
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_ENCODING, "");
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-      'X-Requested-With: XMLHttpRequest',
-      'X-Civi-Auth: Bearer ' . CIVICRM_API_KEY,
-    ]);
-    curl_setopt($ch, CURLOPT_VERBOSE, true);
-
-    $postFields = "entity={$entity}&action={$action}&api_key=" . CIVICRM_API_KEY . "&key=" . CIVICRM_SITE_KEY ."&json=" . (json_encode($params));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-    $data = curl_exec($ch);
-
-    if (curl_errno($ch)) {
-      throw new \Exception(curl_error($ch));
-    } else {
-      $result = json_decode($data, true);
-    }
-    curl_close($ch);
-    if ($result['is_error']) {
-      throw new \Exception(print_r($result, true));
-    }
-    return $result;
-    */
     }
 
     public static function log($message)

@@ -26,5 +26,6 @@ define('FORMINATOR_CIVICRM_PLUGIN_VERSION', '1.0.0');
 
 require FORMINATOR_CIVICRM_PLUGIN_PATH . 'vendor/autoload.php';
 
+require FORMINATOR_CIVICRM_PLUGIN_PATH . 'src/Utils/Config.php';
 require FORMINATOR_CIVICRM_PLUGIN_PATH . 'src/Assets.php';
 require FORMINATOR_CIVICRM_PLUGIN_PATH . 'src/Newsletter.php';
