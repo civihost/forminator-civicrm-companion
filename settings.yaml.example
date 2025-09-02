@@ -1,7 +1,7 @@
 external:
   enabled: true
-  api_key: 'gcbwxa0KVe0LX6jlXB5jF9HZnkADhpyH'
-  site_key: 'JBtqyeB8fsNrUnSNkwOSgjD4HGM4FkYA8yjf9NX8nDI'
+  api_key: ''
+  site_key: ''
   api3_rest_url: 'https://crm.rsr.bio/wp-json/civicrm/v3/rest'
   api4_rest_url: 'https://crm.rsr.bio/civicrm/ajax/api4/'
 
